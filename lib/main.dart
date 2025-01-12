@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:healthhub/auth/login_or_register.dart';
-
+import 'package:healthhub/widgets/recipe_widget.dart';
 import 'package:healthhub/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +26,7 @@ class MainApp extends StatelessWidget {
     return  MaterialApp(
       debugShowCheckedModeBanner: false,
       home: const LoginOrRegister(),
+      
       theme: Provider.of<ThemeProvider> (context).themeData,
     );
   }
