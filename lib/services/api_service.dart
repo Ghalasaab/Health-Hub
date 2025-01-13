@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-// req to spoon
+// handle req to spoon and res
 class ApiService {
   final String apiKey = "69ba9830ef194b2795fd61687ec10fc5";
   final String baseUrl = "https://api.spoonacular.com/recipes";

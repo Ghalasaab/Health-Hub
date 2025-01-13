@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:healthhub/components/my_button.dart';
 import 'package:healthhub/components/my_textfield.dart';
+import 'package:healthhub/pages/home_page.dart';
 
 class RegisterationPage extends StatefulWidget {
   final void Function()? onTap;
@@ -77,7 +78,12 @@ class _RegisterationPageState extends State<RegisterationPage> {
         // sign up button --> customized
       MyButton(
         text: "sign up",
-         onTap: () {},
+         onTap: () {
+          Navigator.pushReplacement(
+            context,
+             MaterialPageRoute(builder: (context) => const HomePage()),
+             );
+         },
          ),
 
           const SizedBox(height: 10),

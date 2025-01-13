@@ -78,7 +78,12 @@ class _LoginPageState extends State<LoginPage> {
         // sign in button --> customized
       MyButton(
         text: "sign in",
-         onTap: () {},
+         onTap: () {
+          Navigator.pushReplacement(
+            context,
+             MaterialPageRoute(builder: (context) => const HomePage()),
+             );
+         },
          ),
 
           const SizedBox(height: 10),
