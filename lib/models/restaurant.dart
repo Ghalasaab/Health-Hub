@@ -1,8 +1,13 @@
 //import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:healthhub/models/cart_item.dart';
 import 'package:healthhub/models/food.dart';
+import 'package:collection/collection.dart';
+import 'package:intl/intl.dart';
+
 /*بيكون فيه جمع للاكواد كلها وكل الفئات مع تفاصيلها
 */ 
-class Restaurant {
+class Restaurant extends ChangeNotifier {
 
 // menu --> listed
 final List<Food> _menu = [
@@ -239,7 +244,7 @@ Food( // (1)
    Food( // (5)
   name: "san spestian",
   description: "Rich, creamy cheesecake with a caramelized,burnt top crust ",
-  imagePath: "lib/imgs/deserts/sp.jpg",
+  imagePath: "lib/imgs/deserts/sspa.jpg",
   price: 25.0,
    category: FoodCategory.deserts,
    availableAddons:[
@@ -263,7 +268,7 @@ Food( // (1)
    Food( // (2)
   name: "coffee",
   description: "coffee",
-  imagePath: "lib/imgs/drinks/coof.jpg",
+  imagePath: "lib/imgs/drinks/coofe.jpg",
   price: 22.0,
    category: FoodCategory.drinks,
    availableAddons:[
@@ -310,9 +315,126 @@ Food( // (1)
 ];
 // getter 
 List<Food> get menu => _menu;
+List<CartItem> get cart => _cart;
 // operations (add to cart-remove)(total price)(total items)(clear cart)
 
+//cart
+final List<CartItem> _cart =[];
 
-//helpers
+//add to cart 
+void addToCart(Food food , List<Addon> selectedAddons){
+  //checking
+  CartItem? cartItem =_cart.firstWhereOrNull((item){
+//1
+bool isSameFood = item.food == food;
+//2
+bool isSameAddon = ListEquality().equals(item.selectedAddons,selectedAddons);
+return isSameFood && isSameAddon;
+  });
+  // شراء نفس item
+  if(cartItem != null){
+    // if the item already exist in cart ++ this item
+      cartItem.quantity++; 
+      //cartItem.quantity = (cartItem.quantity ?? 0 ) + 1; --> second way to check
+  }
+  else{
+    _cart.add( 
+      CartItem(
+        food: food,
+         selectedAddons: selectedAddons,
+         quantity:1,
+         ),
+         );
+  }
+  notifyListeners();//update
 
+  
+}
+         // remove from cart
+void removeFromCart(CartItem cartItem){
+  int cartIndex = _cart.indexOf(cartItem);
+
+  if (cartIndex != -1){
+    if(_cart[cartIndex].quantity > 1 ){
+      _cart[cartIndex].quantity --;
+    }else{
+      _cart.removeAt(cartIndex);
+    }
+  }
+  notifyListeners();
+}
+
+        // get total price of a cart
+        double getTotalPrice(){
+          double total =0.0;
+
+          for (CartItem cartItem in _cart) {
+            double itemTotal = cartItem.food.price;
+
+            for (Addon addon in cartItem.selectedAddons) {
+              itemTotal += addon.price;
+            }
+            total += itemTotal * cartItem.quantity ;
+          }
+          return total;
+        }
+
+        // get total number of items
+        get getTotalItemCount {
+             int totalItemCount =0 ;
+
+             for (CartItem cartItem in _cart) {
+               totalItemCount +=cartItem.quantity;
+             }
+             return totalItemCount;
+        }
+
+        // clear cart
+        void clearCart(){
+          _cart.clear();
+          notifyListeners();//update
+        }
+
+                                                                    /*helpers*/
+//recepit --> methods
+String displayCartReceipt(){
+  final recepit = StringBuffer();
+  recepit.writeln("Here's your recepit. ");
+  recepit.writeln();
+
+  //date including seconds
+String formattedDate = DateFormat('YYYY-MM-dd HH:mm:ss').format(DateTime.now());
+  recepit.writeln(formattedDate);
+  recepit.writeln();
+  recepit.writeln("-----------");
+
+  for (final cartItem in _cart) {
+    recepit.writeln(
+      "${cartItem.quantity} x ${cartItem.food.name} - ${_formatPrice(cartItem.food.price)}");
+      if (cartItem.selectedAddons.isNotEmpty) {
+        recepit.writeln("    Add-ons:   ${_formatAddons(cartItem.selectedAddons)}");
+        
+      }
+  recepit.writeln();
+  }
+  recepit.writeln("----------------");
+  recepit.writeln();
+  recepit.writeln("Total Items: ${getTotalItemCount()}");
+  recepit.writeln("Total price: ${_formatPrice(getTotalPrice())}");
+
+  return recepit.toString();
+}
+//double to to money
+String _formatPrice(double price){
+  return "\$" + price.toStringAsFixed(2);//
+}
+ //summary
+  String _formatAddons(List<Addon> addons){
+    return addons.map((addon) => "${addon.name} (${_formatPrice(addon.price)})").join(", "); //  --->  اصعب بس ارتب
+  }
+
+}
+// correcting the error :
+extension on List<CartItem> {
+  firstWhereOrNull(bool Function(dynamic test) param0) {}
 }

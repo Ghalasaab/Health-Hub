@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:healthhub/components/my_current_location.dart';
 import 'package:healthhub/components/my_description.dart';
 import 'package:healthhub/components/my_drawer.dart';
+import 'package:healthhub/components/my_food_tile.dart';
 import 'package:healthhub/components/my_sliver_app_bar.dart';
 import 'package:healthhub/components/my_tab_bar.dart';
 import 'package:healthhub/models/food.dart';
 import 'package:healthhub/models/restaurant.dart';
+import 'package:healthhub/pages/food_page.dart';
 import 'package:provider/provider.dart';
 //import 'package:healthhub/components/my_current_location.dart';
 
@@ -39,20 +41,33 @@ void dispose(){
 
 //sort and return list(food items same cat) --> burgers with burgers
 List<Food> _filterMenuByCategory(FoodCategory category, List<Food> fullMenu){
+
 return fullMenu.where((food) => food.category == category).toList();
 }
 
 //return list of foodin given cat
 List<Widget> getFoodInThisCategory(List<Food>fullMenu){
 return FoodCategory.values.map((Category){
+// cat menu
 List<Food> categoryMenu =_filterMenuByCategory(Category, fullMenu);
 return ListView.builder(
   itemCount: categoryMenu.length,
   physics: const NeverScrollableScrollPhysics(),
+  padding: EdgeInsets.zero,
   itemBuilder: (context, index) {
-return ListTile(title:Text(categoryMenu[index].name,) 
-);
+    // كل foodلحاله
+    final food = categoryMenu[index];
+    //return food tile(UI)
+return MyFoodTile(
+  food: food,
+   onTap: () => Navigator.push(
+    context,MaterialPageRoute(
+      builder: (context) => FoodPage(food: food),
+      ),
+      ),
+   );
   },
+
    );
 }).toList();
 

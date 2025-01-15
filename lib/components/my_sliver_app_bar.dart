@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:healthhub/pages/cart_page.dart';
 
 // بدل اب بار عادي 
 class MySliverAppBar extends StatelessWidget {
@@ -19,8 +20,15 @@ class MySliverAppBar extends StatelessWidget {
       floating: false, //لازم يختفي الاب بار عشان يطلع اللي تحته 
       pinned: true, // appbar بيكون موجود فوق مهما ارتفع او انخفض اللي تحته
       actions: [
-        // cart button
-        IconButton(onPressed: (){},
+        // cart button --> to cart page
+        IconButton(onPressed: (){
+          Navigator.push(
+            context,
+             MaterialPageRoute(
+              builder: (context) => CartPage(),
+              ),
+              );
+        },
         icon: const Icon(Icons.shopping_cart),
          )
       ],
