@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:healthhub/components/my_button.dart';
 import 'package:healthhub/components/my_textfield.dart';
 import 'package:healthhub/pages/home_page.dart';
-import 'package:healthhub/pages/login_page.dart';
-import 'package:http/http.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class RegisterationPage extends StatefulWidget {
   final void Function()? onTap;
@@ -22,29 +19,6 @@ class _RegisterationPageState extends State<RegisterationPage> {
   final TextEditingController emailController =TextEditingController();
   final TextEditingController passwordController =TextEditingController();
   final TextEditingController confirmpasswordController =TextEditingController();
-
-  Future<void> register() async {
-
-    try {
-
-      final response = await Supabase.instance.client.auth.signUp(
-        email: emailController.text,
-        password: passwordController.text,
-      );
-      if (response.user != null) {
-        // Registration successful
-        print('Registration Successful: User ID - ${response.user!.id}');
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginPage(onTap: null)),
-        );
-      }
-    } catch (e) {
-      // Handle errors
-      print('Registration Error: $e');
-    }
-
-}
 
 
   @override

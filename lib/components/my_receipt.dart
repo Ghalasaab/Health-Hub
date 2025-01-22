@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 class MyReceipt extends StatelessWidget {
   const MyReceipt({super.key});
-
+//final Restaurant restaurant;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -21,8 +21,24 @@ class MyReceipt extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             padding: EdgeInsets.all(25),
-            child:Consumer<Restaurant>(builder: (context,restaurant,child) => Text(restaurant.displayCartReceipt()),) ,
+            child:SingleChildScrollView(
+              child: Column(
+                children: [
+                  Flexible(
+                    child: Consumer<Restaurant>(
+                      builder: (context,restaurant,child) { 
+                        return Text(
+                          restaurant.displayCartReceipt(),
+                          );
+                      },
+                      ),
+                  ),
+                ],
+              ),
+            ) ,
             ),
+           const SizedBox(height: 25),
+           const Text("Delivery time is: 4:10 pm"),
           ],
           ),
       ),

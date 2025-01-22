@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:healthhub/components/my_button.dart';
 //import 'package:healthhub/components/my_button.dart';
 import 'package:healthhub/components/my_textfield.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+//import 'package:supabase_flutter/supabase_flutter.dart';
 import 'home_page.dart';
-
 class LoginPage extends StatefulWidget {
   final void Function()? onTap;
 
@@ -19,45 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController =TextEditingController();
   final TextEditingController passwordController =TextEditingController();
 
-  
-  Future<void> logIn() async{
-    Future<void> logIn() async {
-       try {
-         final response = await Supabase.instance.client.auth.signInWithPassword(
-         email: emailController.text, // User's email 
-         password: passwordController.text,
-          ); // User's password 
-          
-          if (response.user != null) {
-             // Login successful
-              print('Login Successful: User ID - ${response.user!.id}'); 
-              Navigator.pushReplacement(
-                 context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
-                   );
-                    }
-                     } catch (e) { // Handle errors
-                      print('Login Error: $e');
-                       } 
-                       }
-    /*
-    final response = await Supabase.instance.client.auth.signIn(
-      email: emailController.text,
-      password: passwordController.text,
-      );
-
-      if (response.error != null) {
-        //handel error
-        print('Error: ${response.error!.message}');
-      }else{ // login
-        print('Sign-Up Successful: User ID - ${response.data?.user?.id}');
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),);
-      }*/
-  }
-
-  /* login method
+  // login method
   void login(){
     // auths
     // nav to home
@@ -67,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
         builder: (context) => const HomePage(),
         ),
     );
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
           const SizedBox(height: 10),
 
         // sign in button --> customized
-      /*MyButton(
+      MyButton(
         text: "sign in",
          onTap: () {
           Navigator.pushReplacement(
@@ -123,11 +85,7 @@ class _LoginPageState extends State<LoginPage> {
              MaterialPageRoute(builder: (context) => const HomePage()),
              );
          },
-         ),*/
-
-         ElevatedButton(
-          onPressed: logIn,
-          child: Text("Log in"),),
+         ),
 
           const SizedBox(height: 10),
 
@@ -159,4 +117,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-

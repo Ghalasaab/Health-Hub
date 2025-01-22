@@ -19,7 +19,7 @@ class _RecipeWidgetState extends State<RecipeWidget> {
   void fetchRecipes() async {
     try {
       final fetchedRecipes =
-          await apiService.fetchRandomRecipes(number: 3); // Fetch 3 recipes
+          await apiService.fetchRandomRecipes(number: 5); // Fetch 3 recipes
       setState(() {
         recipes = fetchedRecipes;
       });
@@ -41,7 +41,7 @@ class _RecipeWidgetState extends State<RecipeWidget> {
                   title: Text(recipe['title']),
                   subtitle:
                       Text("Ready in ${recipe['readyInMinutes']} minutes"),
-                  trailing: Image.network(recipe['image']),
+                  trailing: Image.network(recipe['image'].toString(),),
                 ),
               );
             },
